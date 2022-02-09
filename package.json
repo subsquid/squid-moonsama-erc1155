@@ -1,5 +1,5 @@
 {
-  "name": "kusama-balances",
+  "name": "moonsama-event-log",
   "private": true,
   "scripts": {
     "build": "rm -rf lib && tsc",
@@ -11,10 +11,14 @@
     "query-node:start": "squid-graphql-server"
   },
   "dependencies": {
-    "@subsquid/graphql-server": "^0.1.4",
-    "@subsquid/ss58": "^0.0.3",
-    "@subsquid/substrate-processor": "^0.2.6",
+    "@subsquid/graphql-server": "^0.0.3",
+    "@subsquid/scale-codec-json": "^0.0.1",
+    "@subsquid/substrate-evm-processor": "file:subsquid-substrate-evm-processor-0.0.1.tgz",
+    "@subsquid/substrate-processor": "file:subsquid-substrate-processor-0.2.5.tgz",
+    "axios": "^0.24.0",
+    "axios-retry": "^3.2.4",
     "dotenv": "^10.0.0",
+    "ethers": "^5.5.2",
     "pg": "^8.7.1",
     "typeorm": "^0.2.41"
   },

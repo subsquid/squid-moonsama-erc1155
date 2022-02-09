@@ -1,10 +1,11 @@
 import {Entity as Entity_, Column as Column_, PrimaryColumn as PrimaryColumn_, ManyToOne as ManyToOne_, Index as Index_} from "typeorm"
 import * as marshal from "./marshal"
-import {Account} from "./account.model"
+import {Owner} from "./owner.model"
+import {Token} from "./token.model"
 
 @Entity_()
-export class HistoricalBalance {
-  constructor(props?: Partial<HistoricalBalance>) {
+export class TokenOwner {
+  constructor(props?: Partial<TokenOwner>) {
     Object.assign(this, props)
   }
 
@@ -12,12 +13,13 @@ export class HistoricalBalance {
   id!: string
 
   @Index_()
-  @ManyToOne_(() => Account, {nullable: false})
-  account!: Account
+  @ManyToOne_(() => Owner, {nullable: false})
+  owner!: Owner
+
+  @Index_()
+  @ManyToOne_(() => Token, {nullable: false})
+  token!: Token
 
   @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
   balance!: bigint
-
-  @Column_("timestamp with time zone", {nullable: false})
-  date!: Date
 }
