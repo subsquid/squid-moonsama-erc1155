@@ -1,3 +1,12 @@
+# Warning: Mocked dependencies
+
+Need to remove listed below dependencies from `package.json`, when new processor will be merged:
+
+```
+susquid-substrate-evm-processor
+susquid-substrate-processor
+```
+
 # squid-template
 
 Sample [squid](https://subsquid.io) project to demonstrate its structure and conventions.
