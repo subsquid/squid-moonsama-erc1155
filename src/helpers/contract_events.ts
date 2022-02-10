@@ -1,5 +1,5 @@
-import { SubstrateBlock, SubstrateExtrinsic } from "@subsquid/hydra-common";
-import { CONTRACT_INTERFACE } from "../../constants";
+import { SubstrateBlock, SubstrateExtrinsic } from "@subsquid/substrate-processor";
+import { CONTRACT_INTERFACE } from "../constants";
 
 
 /**

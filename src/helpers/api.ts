@@ -1,7 +1,7 @@
-import { PROVIDER, INDEXER, API_RETRIES } from '../../constants';
+import { PROVIDER, INDEXER, API_RETRIES } from '../constants';
 import axios, { AxiosRequestConfig } from 'axios';
 import axiosRetry from 'axios-retry';
-import { SubstrateBlock, SubstrateExtrinsic } from '@subsquid/hydra-common';
+import { SubstrateBlock, SubstrateExtrinsic } from '@subsquid/substrate-processor';
 import { ethereumExecutedEventsMapper } from './contract_events';
 
 axiosRetry(axios, {
