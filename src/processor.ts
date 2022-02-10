@@ -35,7 +35,7 @@ processor.setDataSource({
 
 const fromBlock = parseInt(process.env.FROM_BLOCK || '');
 
-processor.addEvmLogHandler(CONTRACT_ADDRESS, async (ctx: EvmLogHandlerContext) => {
+processor.addEvmLogHandler(CONTRACT_ADDRESS, {range: {from: fromBlock}}, async (ctx: EvmLogHandlerContext) => {
     assert(ctx.substrate.event.name === 'evm.Log')
 
     if (!contractInstance) {
