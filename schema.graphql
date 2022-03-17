@@ -1,37 +1,26 @@
 type Token @entity {
-  # {tokenID}
   id: ID!
-  totalSupply: BigInt
-  owners: [TokenOwner!]! @derivedFrom(field: "token")
+  owner: Owner
   uri: String
   transfers: [Transfer!]! @derivedFrom(field: "token")
   contract: Contract
 }
 
 type Owner @entity {
-  # {owner address}
   id: ID!
-  ownedTokens: [TokenOwner!]! @derivedFrom(field: "owner")
-}
-
-type TokenOwner @entity {
-  # ${owner.id}-${token.id}
-  id: ID!
-  owner: Owner!
-  token: Token!
-  balance: BigInt!
+  ownedTokens: [Token!]! @derivedFrom(field: "owner")
+  balance: BigInt
 }
 
 type Contract @entity {
-  # {contract address}
   id: ID!
   name: String
   symbol: String
+  totalSupply: BigInt
   mintedTokens: [Token!]! @derivedFrom(field: "contract")
 }
 
 type Transfer @entity {
-  # {txhash}-{tokenID}-{txlogindex}
   id: ID!
   token: Token!
   # Empty from is minting
