@@ -1,40 +1,36 @@
-import {assertNotNull, Store} from "@subsquid/substrate-evm-processor"
-import {ethers} from "ethers";
-import {Interface} from "ethers/lib/utils"
-import ABI from './abis/ERC1155.json'
-import {Contract} from "./model"
+import { assertNotNull, Store } from "@subsquid/substrate-evm-processor";
+import { ethers } from "ethers";
+import * as erc1155 from "./abi/erc1155";
+import { Contract } from "./model";
 
-export const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || '';
-
-// API constants
-export const INDEXER = process.env.INDEXER_ENDPOINT_URL
-export const API_RETRIES = 5;
-
-// From contract
-export const CONTRACT_NAME = 'Moonsama'
-export const CONTRACT_SYMBOL = 'MSAMA'
-export const CONTRACT_TOTAL_SUPPLY = 1000n
+export const CHAIN_NODE = "wss://wss.api.moonriver.moonbeam.network";
 
 // ethers contract
-export const PROVIDER = new ethers.providers.WebSocketProvider(process.env.CHAIN_NODE || '');
-export const CONTRACT_INSTANCE = new ethers.Contract(CONTRACT_ADDRESS, ABI, PROVIDER);
-
-export  const CONTRACT_INTERFACE = new Interface(ABI);
-
+export const contract = new ethers.Contract(
+  "0xb654611f84a8dc429ba3cb4fda9fad236c505a1a",
+  erc1155.abi,
+  new ethers.providers.WebSocketProvider(CHAIN_NODE)
+);
+ 
 export function createContractEntity(): Contract {
     return new Contract({
-        id: CONTRACT_INSTANCE.address,
-        name: CONTRACT_NAME,
-        symbol: CONTRACT_SYMBOL,
-        totalSupply: CONTRACT_TOTAL_SUPPLY
-    })
-}
-
-let contractEntity: Contract | undefined
-
-export async function getContractEntity({store}: {store: Store}): Promise<Contract> {
+      id: contract.address,
+      name: "Moonsama",
+      symbol: "MSAMA",
+      totalSupply: 1000n,
+    });
+  }
+   
+  let contractEntity: Contract | undefined;
+   
+  export async function getContractEntity({
+    store,
+  }: {
+    store: Store;
+  }): Promise<Contract> {
     if (contractEntity == null) {
-        contractEntity = await store.get(Contract, CONTRACT_INSTANCE.address)
+      contractEntity = await store.get(Contract, contract.address);
     }
-    return assertNotNull(contractEntity)
-}
+    return assertNotNull(contractEntity);
+  }
+  

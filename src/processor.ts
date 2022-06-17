@@ -1,20 +1,19 @@
-import {CONTRACT_ADDRESS, createContractEntity} from "./constants";
+import {CHAIN_NODE, contract, createContractEntity} from "./constants";
+import { lookupArchive } from "@subsquid/archive-registry";
 import {contractLogsHandler} from "./helpers/event";
-import {assertNotNull, SubstrateEvmProcessor} from "@subsquid/substrate-evm-processor";
-import * as erc1155 from './abis/erc1155'
-import {moonsamaBundle} from "./definitions/moonbeam";
+import {SubstrateEvmProcessor} from "@subsquid/substrate-evm-processor";
+import * as erc1155 from './abi/erc1155'
 
 const processor = new SubstrateEvmProcessor('moonbeam-substrate')
 
-processor.setTypesBundle(moonsamaBundle)
+processor.setTypesBundle("moonbeam")
 
-const batchSize = parseInt(process.env.BATCH_SIZE || '');
-processor.setBatchSize(Number.isInteger(batchSize) ? batchSize : 500)
+processor.setBatchSize(500);
 
 processor.setDataSource({
-    chain: assertNotNull(process.env.CHAIN_NODE),
-    archive: assertNotNull(process.env.ARCHIVE)
-})
+  chain: CHAIN_NODE,
+  archive: lookupArchive("moonriver")[0].url,
+});
 
 processor.addPreHook({range: {from: 0, to: 0}}, async ctx => {
     await ctx.store.save(createContractEntity())
@@ -23,11 +22,11 @@ processor.addPreHook({range: {from: 0, to: 0}}, async ctx => {
 const fromBlock = parseInt(process.env.FROM_BLOCK || '');
 
 processor.addEvmLogHandler(
-    CONTRACT_ADDRESS, 
+    contract.address, 
     {
         filter: [
-            erc1155.events[erc1155.TRANSFER_BATCH].topic, 
-            erc1155.events[erc1155.TRANSFER_SINGLE].topic,
+            erc1155.events["TransferBatch(address,address,address,uint256[],uint256[])"].topic, 
+            erc1155.events["TransferSingle(address,address,address,uint256,uint256)"].topic,
         ],
         range: {from: fromBlock}
     }, 
